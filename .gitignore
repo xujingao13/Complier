@@ -1,0 +1,8 @@
+c2js.tab.c
+c2js.tab.o
+c2js.tab.h
+lex.yy.c
+lex.yy.o
+*.out
+out.js
+c2js
