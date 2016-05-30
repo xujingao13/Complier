@@ -1,0 +1,11 @@
+*.o
+parser.cpp
+parser.hpp
+tokens.cpp
+parser
+out.ll
+prog.s
+prog
+task1
+task2
+task3
