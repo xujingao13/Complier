@@ -1,7 +1,7 @@
-# Simple compiler from C to JavaScript
+# Simple compiler from c to assembly language
 
 ## 使用说明
-* linux mac 均可
-* 提前确保安装了flex、bison及g++
-* 在项目根目录下执行`make`生成编译器c2js
-* 执行`./c2js filename.c`完成C到JavaScript的转换，输出结果为out.js
+* 只能在linux下运行
+* 执行`sudo apt-get install llvm-3.4`
+* 在文件下执行`make`
+* 执行`./main taskX.c`

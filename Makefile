@@ -1,28 +1,44 @@
-LEX=flex
-YACC=bison
-CC=g++
-OBJECT=c2js
+all: parser
 
-$(OBJECT): lex.yy.o  c2js.tab.o
-	$(CC) lex.yy.o c2js.tab.o -o $(OBJECT)
+OBJS = parser.o  \
+       codegen.o \
+       main.o    \
+       tokens.o  \
+       corefn.o  \
+	   externc.o  \
 
-lex.yy.o: lex.yy.c  c2js.tab.h
-	$(CC) -c lex.yy.c
-
-yacc.tab.o: c2js.tab.c
-	$(CC) -c c2js.tab.c
-
-yacc.tab.c  c2js.tab.h: c2js.y
-	$(YACC) -d c2js.y
-
-lex.yy.c: c2js.l
-	$(LEX) c2js.l
+LLVMCONFIG = llvm-config
+CPPFLAGS = `$(LLVMCONFIG) --cppflags` -std=c++11
+LDFLAGS = `$(LLVMCONFIG) --ldflags` -lpthread -ldl -lncurses -rdynamic
+LIBS = `$(LLVMCONFIG) --libs`
 
 clean:
-	rm -f c2js.tab.c
-	rm -f c2js.tab.h
-	rm -f c2js.tab.o
-	rm -f lex.yy.c
-	rm -f lex.yy.o
-	rm -f $(OBJECT)
-	rm -f out.js
+	$(RM) -rf parser.cpp parser.hpp parser tokens.cpp $(OBJS) out.ll prog.s prog.o prog
+	$(RM) -rf task1.o task1 task2.o task2 task3.o task3
+
+parser.cpp: parser.y
+	bison -d -o $@ $^
+	
+parser.hpp: parser.cpp
+
+tokens.cpp: tokens.l parser.hpp
+	flex -o $@ $^
+
+%.o: %.cpp
+	g++ -c $(CPPFLAGS) -o $@ $<
+
+
+parser: $(OBJS)
+	g++ -o $@ $(OBJS) $(LIBS) $(LDFLAGS)
+
+exec: 
+	llc -o prog.s out.ll
+	as -o prog.o prog.s
+	gcc -o prog prog.o native.o
+
+task1: parser task1.c
+	cat task1.c | ./parser
+
+task2: parser task2.c
+	cat task2.c | ./parser
+
