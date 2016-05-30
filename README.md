@@ -1,2 +1,7 @@
-## flex分支为flex框架实现c语言到js语言的编译
-## LLVM分支为LLVM框架实现c语言到汇编语言的编译
+# Simple compiler from C to JavaScript
+
+## 使用说明
+* linux mac 均可
+* 提前确保安装了flex、bison及g++
+* 在项目根目录下执行`make`生成编译器c2js
+* 执行`./c2js filename.c`完成C到JavaScript的转换，输出结果为out.js
