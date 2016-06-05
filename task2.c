@@ -2,8 +2,9 @@
 
 int istack[500];
 char cstack[500];
-int topi;
-int topc;
+char poly_exp[500];
+int topi = 0;
+int topc = 0;
 
 int isint(char c){
     if('0' <= c && c <= '9'){
@@ -25,7 +26,8 @@ int getType(char c){
 
 int getlength(char str[]){
     int len = 0;
-    for(int i = 0; str[i] != '\0'; i++){
+    int i = 0;
+    for(i = 0; str[i] != '\0'; i++){
         len++;
     }
     return len;
@@ -50,6 +52,12 @@ char ctop(){
     return r;
 }
 
+int itop(){
+    int r;
+    r = istack[topi-1];
+    return r;
+}
+
 void pushi(int i){
     istack[topi]=i;
     topi=topi+1;
@@ -67,7 +75,7 @@ int empytc(){
     return 0;
 }
 
-void toBack(char str[], char exp[]){
+void toBack(char str[]){
     int stillint = 0;
     int str_len = getlength(str);
     int num = 0;
@@ -78,31 +86,31 @@ void toBack(char str[], char exp[]){
             if(stillint){
                 if((i+1) != str_len){
                     if(isint(str[i+1])){
-                        exp[num] = c;
+                        poly_exp[num] = c;
                         num++;
                     }
                     else{
                         stillint = 0;
-                        exp[num] = c;
+                        poly_exp[num] = c;
                         num++;
-                        exp[num] = '~';
+                        poly_exp[num] = '~';
                         num++;
                     }
                 }
                 else{
-                    exp[num] = c;
+                    poly_exp[num] = c;
                     num++;
                 }
             }
             else{
-                exp[num] = c;
+                poly_exp[num] = c;
                 num++;
                 stillint = 1;
             }
         }
         else{
             if(stillint){
-                exp[num] = '~';
+                poly_exp[num] = '~';
                 num++;
                 stillint = 0;
             }
@@ -111,7 +119,7 @@ void toBack(char str[], char exp[]){
             }else{
                 if(c == ')'){
                     while(ctop() != '('){
-                        exp[num] = ctop();
+                        poly_exp[num] = ctop();
                         num++;
                         popc();
                     }
@@ -123,8 +131,8 @@ void toBack(char str[], char exp[]){
                         if(getType(c) > getType(ctop())){
                             pushc(c);
                         }else{
-                            while(!empytc() && getType(c) <= getType(ctop())){
-                                exp[num] = ctop();
+                            while((1 - empytc()) && getType(c) <= getType(ctop())){
+                                poly_exp[num] = popc();
                                 num++;
                             }
                             pushc(c);
@@ -134,21 +142,60 @@ void toBack(char str[], char exp[]){
             }
         }
     }
-    while(!empytc()){
-        exp[num] = ctop();
+    while(empytc() == 0){
+        poly_exp[num] = ctop();
         num++;
         popc();
     }
 }
 
-int toResult(char exp[]){
-    return 0;
+int toResult(){
+    int val = 0;
+    int i = 0;
+    int len = getlength(poly_exp);
+    int result = 0;
+    for(i = 0; i < len; i++){
+        char c = poly_exp[i];
+        if(isint(c)){
+            val = val*10+(c-'0');
+        }
+        if(c == '~'){
+            pushi(val);
+            val = 0;
+        }
+        if(isint(c) && (1-isint(poly_exp[i+1])) && poly_exp[i+1] != '~'){
+            pushi(val);
+            val = 0;
+        }
+        if(c == '+'){
+            int x = popi();
+            int y = popi();
+            pushi(x+y);
+        }
+        if(c == '-'){
+            int x = popi();
+            int y = popi();
+            pushi(y-x);
+        }
+        if(c == '*'){
+            int x = popi();
+            int y = popi();
+            pushi(y*x);
+        }
+        if(c == '/'){
+            int x = popi();
+            int y = popi();
+            pushi(y/x);
+        }
+    }
+    result = popi();
+    return result;
 }
 int main(){
-    char str[] = "1+2*3";
-    char exp[100] = {'\0'};
-    toBack(str, exp);
-    printf("%d\n", getlength(exp));
-    printf("%s\n", exp);
+    char str[] = "1*(3+2)*3";
+    int result = 0;
+    toBack(str);
+    result = toResult();
+    printf("%d\n", result);
     return 0;
 }
