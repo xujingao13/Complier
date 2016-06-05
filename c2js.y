@@ -46,7 +46,7 @@ include_declaration
     ;
 
 define_declaration
-    : DEFINE IDENTIFIER CONST  {$$ = "var " + $2 + "=" + $3}
+    : DEFINE IDENTIFIER CONST  {$$ = "var " + $2 + "=" + $3;}
 
 comment
     : COMMENT string {$$ = $1 + $2;}
