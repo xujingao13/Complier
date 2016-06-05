@@ -47,7 +47,7 @@ void showStr();
 \'(\\.|[^\\'])*\'        { cout<<"STRING_LITERAL: "; showStr(); return(STRING_LITERAL); }
 
 "\\n"			{ /* ignore enter key*/ }
-[ \n\t\v\f] 	{ }
+[ \n\t\v\f] 	  { }
 "++"            { cout<<"++:	"; showStr(); return(INC_OP);	}
 "--"            { cout<<"--:	"; showStr(); return(DEC_OP); 	}
 "<="            { cout<<"<=:	"; showStr(); return(LE_OP); 	}
@@ -71,24 +71,23 @@ void showStr();
 "="             { cout<<"=:		"; showStr(); return('='); 		}
 "("             { cout<<"(:		"; showStr(); return('('); 		}
 ")"             { cout<<"):		"; showStr(); return(')'); 		}
-"{"     		{ cout<<"{:		"; showStr(); return('{'); 		}
-"}"      		{ cout<<"}:		"; showStr(); return('}'); 		}
-"["      		{ cout<<"[:		"; showStr(); return('['); 		}
-"]"      		{ cout<<"]:		"; showStr(); return(']'); 		}
-"\""			{ cout<<"\":	"; showStr(); return('\"');		}
+"{"     		    { cout<<"{:		"; showStr(); return('{'); 		}
+"}"      		    { cout<<"}:		"; showStr(); return('}'); 		}
+"["      		    { cout<<"[:		"; showStr(); return('['); 		}
+"]"      		    { cout<<"]:		"; showStr(); return(']'); 		}
+"\""			      { cout<<"\":	"; showStr(); return('\"');		}
 
-.                     printf("Unknown : %c\n",yytext[0]);
+.               printf("Unknown : %c\n",yytext[0]);
 
 %%
 
 void showStr()
 {
     yylval = yytext;
-	cout<<yytext<<endl;
+    cout << yytext <<endl;
 }
 
 int yywrap()
 {
-	return 1;
+    return 1;
 }
-

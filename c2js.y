@@ -95,7 +95,7 @@ parameter_declaration
     ;
 
 left_bracket
-	: '{'	{$$ = $1 + '\n'; 
+	: '{'	{$$ = $1 + '\n';
 			tabNum++;
 			}
 	;
@@ -106,7 +106,7 @@ compound_statement
     ;
 
 right_bracket
-	: '}'	{$$ = ""; 
+	: '}'	{$$ = "";
 			tabNum--;
 			for(int i = 0; i < tabNum; i++)
 				$$ = $$ + '\t';
@@ -373,7 +373,6 @@ jump_statement
     						$$ = $$ + $1 + " " + $2 + $3 + '\n';
     						}
     ;
-
 %%
 
 void yyerror(const char* str)
@@ -410,20 +409,3 @@ int main(int argc, char* argv[])
 
     cout << "------------- END -------------\n";
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
