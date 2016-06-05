@@ -18,11 +18,11 @@ int tabNum = 0;
 
 %token IDENTIFIER CONST STRING_LITERAL
 %token INC_OP DEC_OP AND_OP OR_OP LE_OP GE_OP EQ_OP NE_OP
-%token VOID CHAR INT FLOAT DOUBLE
+%token VOID CHAR INT FLOAT DOUBLE BOOL
 %token LEFT_OP RIGHT_OP
 
 %token IF ELSE FOR RETURN WHILE COMMENT COMMENTLONG CONTINUE BREAK
-%token INCLUDE
+%token INCLUDE DEFINE
 %start program
 
 %%
@@ -36,6 +36,7 @@ program_unit
     : include_declaration   {$$ = $1;}
     | function_declaration  {$$ = $1;}
     | variable_declaration {$$ = $1;}
+    | define_declaration {$$ = $1;}
     | comment               {$$ = $1;}
     ;
 
@@ -43,6 +44,9 @@ include_declaration
     : INCLUDE '<' IDENTIFIER '.' IDENTIFIER '>' {$$ = "";}
     | INCLUDE '<' IDENTIFIER '>'                {$$ = "";}
     ;
+
+define_declaration
+    : DEFINE IDENTIFIER CONST  {$$ = "var " + $2 + "=" + $3}
 
 comment
     : COMMENT string {$$ = $1 + $2;}
@@ -63,6 +67,7 @@ type_specifier
     | CHAR  {$$ = "var";}
     | INT   {$$ = "var";}
     | FLOAT {$$ = "var";}
+    | BOOL {$$ = "var";}
     ;
 
 declarator

@@ -33,6 +33,8 @@ void showStr();
 "if"            { cout<<"IF: 		"; showStr();  return(IF);		}
 "else"          { cout<<"ELSE:      "; showStr();  return(ELSE);    }
 "int"           { cout<<"INT: 		"; showStr();  return(INT);		}
+"#define"           { cout<<"DEFINE: 		"; showStr();  return(DEFINE);		}
+"bool"           { cout<<"BOOL: 		"; showStr();  return(BOOL);		}
 "return"        { cout<<"RETURN: 	"; showStr();  return(RETURN);	}
 "void"          { cout<<"VOID: 		"; showStr();  return(VOID);	}
 "#include"      { cout<<"INCLUDE: 	"; showStr();  return(INCLUDE); }
