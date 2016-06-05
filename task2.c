@@ -25,8 +25,7 @@ int getType(char c){
 
 int getlength(char str[]){
     int len = 0;
-    int i = 0;
-    for(i = 0; str[i] != '\0'; i++){
+    for(int i = 0; str[i] != '\0'; i++){
         len++;
     }
     return len;
@@ -147,8 +146,9 @@ int toResult(char exp[]){
 }
 int main(){
     char str[] = "1+2*3";
-    char exp[100];
+    char exp[100] = {'\0'};
     toBack(str, exp);
+    printf("%d\n", getlength(exp));
     printf("%s\n", exp);
     return 0;
 }
