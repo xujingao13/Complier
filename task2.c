@@ -192,7 +192,7 @@ int toResult(){
     return result;
 }
 int main(){
-    char str[] = "1*(3+2)*3";
+    char str[] = "1-(3+2)*3+4/5";
     int result = 0;
     toBack(str);
     result = toResult();
